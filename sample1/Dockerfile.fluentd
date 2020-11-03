@@ -1,0 +1,7 @@
+FROM fluent/fluentd:v1.11.4-debian-1.0
+# FROM fluent/fluentd:v1.11.4-debian-arm64-1.0
+USER root
+RUN apt-get update
+RUN apt-get install make gcc g++ libc-dev -y --no-install-recommends
+RUN gem install fluent-plugin-kafka --no-document
+RUN gem install fluent-plugin-elasticsearch --no-document

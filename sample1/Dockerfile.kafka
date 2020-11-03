@@ -1,0 +1,16 @@
+FROM debian:buster
+RUN apt-get update -y
+RUN apt-get install wget -y
+RUN wget https://ftp.riken.jp/net/apache/kafka/2.6.0/kafka_2.13-2.6.0.tgz
+# COPY kafka_2.13-2.6.0.tgz .
+RUN tar -xzf kafka_2.13-2.6.0.tgz
+WORKDIR /kafka_2.13-2.6.0
+SHELL [ "bash", "-c", "-l" ]
+RUN apt-get install curl -y
+RUN apt-get install unzip -y
+RUN apt-get install zip -y
+RUN curl -s "https://get.sdkman.io" | bash
+RUN sdk install java 8.0.272-amzn
+COPY kafka_config/server.properties config/server.properties
+# COPY config/server.properties /data/
+# COPY config/zookeeper.properties /data/

@@ -1,0 +1,24 @@
+FROM debian:buster
+RUN apt-get update -y
+RUN apt-get install curl -y
+RUN apt-get install libdigest-sha-perl -y
+
+#############
+# x86
+#############
+RUN curl -O https://artifacts.elastic.co/downloads/kibana/kibana-7.9.3-linux-x86_64.tar.gz
+RUN curl https://artifacts.elastic.co/downloads/kibana/kibana-7.9.3-linux-x86_64.tar.gz.sha512 | shasum -a 512 -c - 
+RUN tar -xzf kibana-7.9.3-linux-x86_64.tar.gz
+RUN mv /kibana-7.9.3-linux-x86_64 /kibana
+#############
+
+#############
+# arm
+#############
+# RUN curl -O https://artifacts.elastic.co/downloads/kibana/kibana-7.9.3-linux-aarch64.tar.gz
+# RUN curl https://artifacts.elastic.co/downloads/kibana/kibana-7.9.3-linux-aarch64.tar.gz.sha512 | shasum -a 512 -c - 
+# RUN tar -xzf kibana-7.9.3-linux-aarch64.tar.gz
+# RUN mv /kibana-7.9.3-linux-aarch64 /kibana
+#############
+
+WORKDIR /kibana

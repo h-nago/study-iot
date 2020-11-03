@@ -1,0 +1,47 @@
+version: "3.6"
+services:
+  dummy-sensor:
+    build:
+      dockerfile: Dockerfile.dummy_sensor
+      context: .
+  fluentd-frontend:
+    build:
+      dockerfile: Dockerfile.fluentd
+      context: .
+    volumes:
+    - ./fluentd_config/fluent_frontend.conf:/fluentd/etc/fluent.conf
+    ports:
+    - 9880:9880
+  kafka:
+    build:
+      dockerfile: Dockerfile.kafka
+      context: .
+    volumes:
+      - ./kafka_config:/data
+    command: bash -c -l "bin/kafka-server-start.sh config/server.properties"
+  zookeeper:
+    build:
+      dockerfile: Dockerfile.kafka
+      context: .
+    command: bash -c -l "bin/zookeeper-server-start.sh config/zookeeper.properties"
+  es:
+    image: elasticsearch:7.9.3
+    environment:
+      discovery.type: single-node
+    volumes:
+      - ./es-data:/usr/share/elasticsearch/data
+  kibana:
+    build:
+      dockerfile: Dockerfile.kibana
+      context: .
+    ports:
+      - 5601:5601
+    volumes:
+      - ./kibana_config/kibana.yml:/kibana/config/kibana.yml
+    command: bash -c "bin/kibana --allow-root"
+  fluentd-kafka2es:
+    build:
+      dockerfile: Dockerfile.fluentd
+      context: .
+    volumes:
+    - ./fluentd_config/fluent_kafka2es.conf:/fluentd/etc/fluent.conf

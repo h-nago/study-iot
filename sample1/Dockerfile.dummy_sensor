@@ -1,0 +1,6 @@
+FROM debian:buster
+RUN apt-get update -y
+RUN apt-get install curl -y
+COPY dummy_sensor/dummy_sensor.sh /dummy_sensor.sh
+RUN chmod +x /dummy_sensor.sh
+ENTRYPOINT ["bash","-c","/dummy_sensor.sh"]
